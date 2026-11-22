@@ -1,9 +1,10 @@
 import type { AvatarColor, AvatarShape } from '@shared/types';
 import { BotAvatar, PICKER_CHARACTERS } from './BotAvatar';
 
-/** The house's characters, three rows of five (plan 275, 2026-11-13). Its colour shows as the ring. */
+/** The house's characters, in rows of five (plan 275, 2026-11-13; the agents added 2026-11-22). Its colour shows as the ring. */
 export function CharacterPicker({ shape, color, onShape, size = 40 }: { shape: AvatarShape; color: AvatarColor; onShape: (s: AvatarShape) => void; size?: number }) {
-  const rows = [PICKER_CHARACTERS.slice(0, 5), PICKER_CHARACTERS.slice(5, 10), PICKER_CHARACTERS.slice(10)];
+  // rows of five, however many characters the house has (the agents joined the beasts, 2026-11-22)
+  const rows = Array.from({ length: Math.ceil(PICKER_CHARACTERS.length / 5) }, (_, i) => PICKER_CHARACTERS.slice(i * 5, i * 5 + 5));
   return (
     <div className="shape-grid" role="radiogroup" aria-label="The agent's character">
       {rows.map((row, i) => (

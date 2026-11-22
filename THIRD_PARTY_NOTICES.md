@@ -81,3 +81,29 @@ mark's bronze on stone when drawn; the files themselves are unchanged.
 | Heiðrún | goat | Skoll |
 | Gullinbursti | boar | Caro Asercion |
 | Sól | heraldic-sun | Caro Asercion |
+
+| Sindri | anvil | Lorc |
+| Völundr | anvil-impact | Lorc |
+| Brokk | bellows | Delapouite |
+| Bragi | lyre | Lorc |
+| Forseti | scales | Lorc |
+| Móðguðr | stone-bridge | Delapouite |
+| Mímir | well | Delapouite |
+| Muninn | feather | Lorc |
+| Kvasir | magnifying-glass | Lorc |
+| Sága | scroll-unfurled | Lorc |
+| Snotra | quill-ink | Lorc |
+| Skírnir | envelope | Lorc |
+| Sýn | eyeball | Lorc |
+| Týr | fist | Lorc |
+| Víðarr | checked-shield | Lorc |
+| Urðr | hourglass | Lorc |
+| Vör | stethoscope | Delapouite |
+| Eir | healing | Delapouite |
+| Gróa | sprout | Lorc |
+| Galdr | rune-stone | Lorc |
+| Hnoss | gem-pendant | Lorc |
+| Jörð | mountains | Lorc |
+| Frigg | sewing-needle | Lorc |
+| Andhrímnir | cauldron | Lorc |
+| Nanna | flowers | Lorc |

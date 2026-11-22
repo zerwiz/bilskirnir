@@ -23,7 +23,7 @@ export const api = new Hono<AuthVars>();
 
 /** The house's characters (plan 275): the Ymir mark first, then the fourteen figures. A new agent wears the mark. */
 const HOUSE_CHARACTERS: AvatarShape[] = ['ymir', 'huginn', 'fenrir', 'jormungandr', 'sleipnir', 'ratatoskr', 'hraesvelgr',
-  'heidrun', 'eikthyrnir', 'gullinbursti', 'mjolnir', 'gungnir', 'skidbladnir', 'sol', 'mani'];
+  'heidrun', 'eikthyrnir', 'gullinbursti', 'mjolnir', 'gungnir', 'skidbladnir', 'sol', 'mani', 'sindri', 'volundr', 'brokk', 'bragi', 'forseti', 'modgud', 'mimir', 'muninn', 'kvasir', 'saga', 'snotra', 'skirnir', 'syn', 'tyr', 'vidarr', 'urdh', 'vor', 'eir', 'groa', 'galdr', 'hnoss', 'jord', 'frigg', 'andhrimnir', 'nanna'];
 const SHAPES: AvatarShape[] = ['blob', 'pebble', 'bean', 'egg', 'squircle', 'tablet', 'capsule', 'cylinder', 'hex', 'gem', 'crystal', 'wedge', 'shield', 'dome', 'arch', 'cloud', 'teardrop', 'leaf', 'square', 'sparkle', 'clover', 'flower', 'heart', 'house', 'star',
   ...HOUSE_CHARACTERS];
 const COLORS: AvatarColor[] = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'violet', 'magenta', 'gray'];
