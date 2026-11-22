@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import type { AvatarColor, AvatarShape, Bot } from '@shared/types';
 import { BotAvatar } from '../../avatar/BotAvatar';
 import { CharacterPicker } from '../../avatar/CharacterPicker';
+import { PICKER_CHARACTERS } from '../../avatar/BotAvatar';
 import { api } from '../../lib/api';
 import { COLOR_NAMES, COLOR_ORDER, palette } from '../../lib/colors';
 import { useStore } from '../../store';
@@ -19,6 +20,15 @@ export function CreateBotModal() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const close = useCallback(() => setModal(null), [setModal]);
+  // choosing a character fills its name (2026-11-22, the Allfather): "Sindri" for the anvil. A name the person typed
+  // is never overwritten; one we filled is replaced when another character is chosen, and can be erased or changed.
+  const [filled, setFilled] = useState('');
+  const chooseShape = (s: AvatarShape) => {
+    setShape(s);
+    const c = PICKER_CHARACTERS.find((x) => x.id === s);
+    const figure = c && s !== 'ymir' ? c.name.split(' · ')[0] : '';
+    if (!name.trim() || name === filled) { setName(figure); setFilled(figure); }
+  };
   const canCreate = name.trim().length > 0 && !busy;
 
   const create = async () => {
@@ -54,7 +64,7 @@ export function CreateBotModal() {
             autoFocus
             aria-label="Agent name"
           />
-          <CharacterPicker shape={shape} color={color} onShape={setShape} />
+          <CharacterPicker shape={shape} color={color} onShape={chooseShape} />
           <div className="swatches" role="radiogroup" aria-label="The agent's hue">
             <div className="swatches__row">
               {COLOR_ORDER.map((c) => (
