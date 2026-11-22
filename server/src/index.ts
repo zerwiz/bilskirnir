@@ -16,6 +16,7 @@ import { initRooms } from './agent/rooms.js';
 import { checkinsApi } from './routes-proactive.js';
 import { calendarApi } from './routes-calendar.js';
 import { roomsApi } from './routes-rooms.js';
+import { nornirApi } from './routes-nornir.js';
 import { enqueue, expireStaleApprovals } from './agent/loop.js';
 import { desSelfTest } from './lib/des.js';
 import { configApi } from './routes-config.js';
@@ -36,6 +37,7 @@ app.route('/mcp', mcpApi);
 app.route('/api/checkins', checkinsApi);
 app.route('/api/calendar', calendarApi);
 app.route('/api/rooms', roomsApi);
+app.route('/api/nornir', nornirApi);
 app.route('/api', api);
 app.route('/api', configApi);
 

@@ -99,3 +99,20 @@ export const configApi = {
   connectedApps: () => req<{ connectedApps?: Toolkit[]; connected: string[] }>('GET', '/apps?limit=1'),
   logout: () => req<{ ok: true }>('POST', '/auth/logout'),
 };
+
+export interface NornirJob { role?: string; days?: string[]; at?: string; command: string; here?: boolean; next?: string; last_ran?: string; ok?: boolean | null; rc?: number | null; why?: string; invalid?: boolean }
+export interface NornirDoor { machine: string; roles: string[]; clock: string; now: string; jobs: NornirJob[]; counts?: Record<string, number> }
+export interface NornirMachine { name: string; via: 'local' | 'ssh'; status: 'ok' | 'silent'; reason?: string; roles: string[]; door?: NornirDoor }
+export interface NornirReport { machines: NornirMachine[]; at: number }
+
+export const nornirApi = {
+  get: async (fresh = false): Promise<NornirReport> => {
+    const res = await fetch(`/api/nornir${fresh ? '?fresh=1' : ''}`, { credentials: 'include' });
+    if (!res.ok) {
+      let msg = res.statusText;
+      try { msg = ((await res.json()) as { error?: string }).error ?? msg; } catch { /* not json */ }
+      throw new ApiError(res.status, msg);
+    }
+    return res.json() as Promise<NornirReport>;
+  },
+};

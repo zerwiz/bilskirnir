@@ -235,3 +235,26 @@
   .models-add .cfg-btn { width: 100%; }
   .models-provider .models-provider__head { flex-wrap: wrap; }
 }
+
+/* ---------- Nornir view: the house's clock, one section per machine ---------- */
+.nornir-inner { max-width: 1040px; }
+.nornir-machines { display: flex; flex-direction: column; gap: 22px; }
+.nornir-machine__head { display: flex; align-items: center; gap: 10px; padding-bottom: 6px; }
+.nornir-machine__name { font-size: 15px; font-weight: 600; color: var(--color-text-primary); }
+.nornir-machine__meta { margin-right: auto; font-size: 12px; color: var(--color-text-tertiary); }
+.nornir-card { padding: 4px 0; }
+.nornir-counts { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 14px; font-size: 12px; color: var(--color-text-secondary); }
+.nornir-bad { color: var(--color-danger-text); font-weight: 500; }
+.nornir-chip.is-fail { background: var(--color-danger-bg); color: var(--color-danger-text); }
+.nornir-scroll { overflow-x: auto; }
+.nornir-table { width: 100%; border-collapse: collapse; font-size: 12px; line-height: 16px; }
+.nornir-table th { padding: 6px 14px; text-align: left; font-weight: 500; color: var(--color-text-tertiary); white-space: nowrap; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.nornir-table td { padding: 8px 14px; vertical-align: top; color: var(--color-text-primary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+.nornir-table tr:last-child td { border-bottom: 0; }
+.nornir-job__when { white-space: nowrap; }
+.nornir-job__time { white-space: nowrap; color: var(--color-text-secondary); }
+.nornir-job__cmd code { font-size: 12px; overflow-wrap: anywhere; }
+.nornir-job__why { margin-top: 2px; color: var(--color-danger-text); overflow-wrap: anywhere; }
+.nornir-role { margin-left: 6px; padding: 0 6px; border-radius: var(--radius-full); background: var(--color-bg-tertiary); color: var(--color-text-secondary); font-size: 11px; }
+.nornir-job.is-failing { background: var(--color-danger-bg); }
+.nornir-job.is-elsewhere td { opacity: 0.55; }
