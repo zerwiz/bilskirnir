@@ -8,6 +8,7 @@ import { computerStatusText, screenSize, screensFull } from '../lib/computer';
 import { configApi } from '../lib/configApi';
 import { useSelectedBot, useStore } from '../store';
 import { Icon } from './Icon';
+import { endCall, isCallActive, startCall, togglePause, useVoice } from '../voice/call';
 
 export type ScreenMode = 'watch' | 'control';
 type Conn = 'idle' | 'connecting' | 'connected' | 'disconnected' | 'error';
@@ -100,6 +101,7 @@ export function ComputerScreen({ bot, variant, initialMode = 'watch', hint, paus
       const url = `${proto}://${location.host}/api/bots/${bot.id}/screen?mode=${mode}`;
       rfb = new RFB(canvasRef.current, url, { shared: true });
       rfb.viewOnly = mode === 'watch';
+      rfb.showDotCursor = true;       // her pointer is always visible, so he can watch it move
       rfb.scaleViewport = true;
       rfb.resizeSession = false;
       rfb.background = 'transparent';
@@ -337,11 +339,29 @@ export function ComputerViewer() {
           <span>{bot.name}’s computer</span>
           <span className="viewer__status">{computerStatusText(computer)}</span>
         </div>
+        <ViewerVoice bot={bot} />
         <button type="button" className="viewer__close" onClick={close} aria-label="Close computer"><Icon name="close" color="#FFFFFF" /></button>
       </div>
       <div className="viewer__stage">
         <ComputerScreen key={bot.id} bot={bot} variant="stage" initialMode={initialMode} hint={hint} onModeChange={onModeChange} />
       </div>
+    </div>
+  );
+}
+
+/** Talk to the agent while watching her computer: start, pause and stop the live voice from the viewer (2026-11-22).
+ *  The call hands real work to her turn queue, and that work runs on her own computer — the screen above. */
+function ViewerVoice({ bot }: { bot: Bot }) {
+  const v = useVoice();
+  const mine = v.botId === bot.id && isCallActive(v);
+  if (!mine) {
+    return <button type="button" className="viewer__voice is-start" onClick={() => startCall(bot.id)} title={`Talk to ${bot.name}`}>● Talk</button>;
+  }
+  return (
+    <div className="viewer__voice-group" role="group" aria-label="Voice">
+      <span className="viewer__voice-state">{v.status === 'connecting' ? 'connecting…' : v.paused ? 'paused' : v.speaking ? `${bot.name} speaks` : v.thinking ? 'thinking…' : 'listening'}</span>
+      <button type="button" className="viewer__voice" onClick={togglePause} aria-pressed={v.paused}>{v.paused ? '▶ Resume' : '❚❚ Pause'}</button>
+      <button type="button" className="viewer__voice is-stop" onClick={endCall}>■ Stop</button>
     </div>
   );
 }
