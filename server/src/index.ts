@@ -14,6 +14,7 @@ import { initProactive } from './proactive.js';
 import { initSubagents } from './agent/subagents.js';
 import { initRooms } from './agent/rooms.js';
 import { checkinsApi } from './routes-proactive.js';
+import { calendarApi } from './routes-calendar.js';
 import { roomsApi } from './routes-rooms.js';
 import { enqueue, expireStaleApprovals } from './agent/loop.js';
 import { desSelfTest } from './lib/des.js';
@@ -33,6 +34,7 @@ app.get('/api/health', (c) => c.json({ ok: true, engine: 'hermes' }));
 // The app's tools for the agent engines (MCP).
 app.route('/mcp', mcpApi);
 app.route('/api/checkins', checkinsApi);
+app.route('/api/calendar', calendarApi);
 app.route('/api/rooms', roomsApi);
 app.route('/api', api);
 app.route('/api', configApi);
