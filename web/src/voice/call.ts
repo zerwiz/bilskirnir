@@ -16,6 +16,8 @@ interface VoiceState {
   botId: string | null;
   callId: string | null;
   muted: boolean;
+  /** paused: she neither hears nor speaks until resumed — the call and her work go on (2026-11-22) */
+  paused: boolean;
   /** Bot audio is playing. */
   speaking: boolean;
   /** Server VAD hears the user. */
@@ -30,7 +32,7 @@ interface VoiceState {
 }
 
 export const useVoice = create<VoiceState>(() => ({
-  status: 'idle', botId: null, callId: null, muted: false, speaking: false, listening: false, thinking: false,
+  status: 'idle', botId: null, callId: null, muted: false, paused: false, speaking: false, listening: false, thinking: false,
   working: [], captions: [], error: null, startedAt: null,
 }));
 
@@ -52,6 +54,8 @@ export function endCall() { current?.end(); }
 /** The voice settings changed during a call with this bot: the call takes the new voice at once. */
 export function updateCallVoice(botId: string, voice: string, speed?: number) { if (current && !current.ended && current.botId === botId) current.setVoice(voice, speed); }
 export function toggleMute() { current?.setMuted(!useVoice.getState().muted); }
+/** Pause: her voice is silenced and the mic closed; the call stays up and her work on her computer goes on. */
+export function togglePause() { current?.setPaused(!useVoice.getState().paused); }
 export function callLevels(): { out: number; mic: number } {
   return current && !current.ended ? { out: current.player.level(), mic: current.micLevel() } : { out: 0, mic: 0 };
 }
@@ -96,7 +100,7 @@ class VoiceCall {
   micLevel() { return useVoice.getState().muted ? 0 : this.mic?.level ?? 0; }
 
   async start() {
-    setV({ status: 'connecting', botId: this.botId, callId: null, muted: false, speaking: false, listening: false, thinking: false, working: [], captions: [], error: null, startedAt: null });
+    setV({ status: 'connecting', botId: this.botId, callId: null, muted: false, paused: false, speaking: false, listening: false, thinking: false, working: [], captions: [], error: null, startedAt: null });
     window.addEventListener('pagehide', this.onUnload);
     let stream: MediaStream;
     try {
@@ -177,6 +181,12 @@ class VoiceCall {
     this.lastFrame = Date.now();
     if (!this.ready || this.ended || useVoice.getState().muted) return;
     this.send({ type: 'input_audio_buffer.append', audio: pcmToBase64(pcm) });
+  }
+
+  setPaused(p: boolean) {
+    this.setMuted(p);
+    if (p) this.player.clear();
+    setV({ paused: p });
   }
 
   setMuted(m: boolean) {
@@ -260,7 +270,7 @@ class VoiceCall {
       case 'response.audio.delta':
         if (ev.delta && !(this.interruptedId && ev.response_id === this.interruptedId)) {
           this.responseSpoke = true;
-          this.player.push(base64ToPcm(ev.delta), this.sess?.sampleRate);
+          if (!useVoice.getState().paused) this.player.push(base64ToPcm(ev.delta), this.sess?.sampleRate);
         }
         return;
 
