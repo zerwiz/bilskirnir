@@ -1,5 +1,5 @@
 // Generates src/avatar/characters.gen.ts from artwork/characters/*.svg (plan 275, 2026-11-13).
-// The house's fourteen characters, one for each figure of the lore, drawn from game-icons.net (CC BY 3.0;
+// The house's characters: fourteen beasts and treasures of the lore, and one for every agent of the house, drawn from game-icons.net (CC BY 3.0;
 // credits in THIRD_PARTY_NOTICES.md). Each source is a 512×512 SVG: a black background square and the figure in
 // white. Only the figure's paths are kept; the avatar paints them in the Ymir mark's bronze on stone.
 import fs from 'node:fs';
@@ -21,6 +21,32 @@ const CHARACTERS = [
   ['skidbladnir', 'Skíðblaðnir · the ship', 'delapouite/drakkar'],
   ['sol', 'Sól · the sun', 'caro-asercion/heraldic-sun'],
   ['mani', 'Máni · the moon', 'lorc/moon'],
+  // the house's agents, one each (2026-11-22, the Allfather: "we are missing icons for all the agents we have")
+  ['sindri', 'Sindri · the smith', 'lorc/anvil'],
+  ['volundr', 'Völundr · the master smith', 'lorc/anvil-impact'],
+  ['brokk', 'Brokk · the bellows', 'delapouite/bellows'],
+  ['bragi', 'Bragi · the skald', 'lorc/lyre'],
+  ['forseti', 'Forseti · the judge', 'lorc/scales'],
+  ['modgud', 'Móðguðr · the bridge-keeper', 'delapouite/stone-bridge'],
+  ['mimir', 'Mímir · the well', 'delapouite/well'],
+  ['muninn', 'Muninn · memory', 'lorc/feather'],
+  ['kvasir', 'Kvasir · the scout', 'lorc/magnifying-glass'],
+  ['saga', 'Sága · the seeress', 'lorc/scroll-unfurled'],
+  ['snotra', 'Snotra · the scribe', 'lorc/quill-ink'],
+  ['skirnir', 'Skírnir · the messenger', 'lorc/envelope'],
+  ['syn', 'Sýn · the watch', 'lorc/eyeball'],
+  ['tyr', 'Týr · the oath', 'lorc/fist'],
+  ['vidarr', 'Víðarr · the defender', 'lorc/checked-shield'],
+  ['urdh', 'Urðr · the hold', 'lorc/hourglass'],
+  ['vor', 'Vör · the diagnostician', 'delapouite/stethoscope'],
+  ['eir', 'Eir · the healer', 'delapouite/healing'],
+  ['groa', 'Gróa · the renewal', 'lorc/sprout'],
+  ['galdr', 'Galdr · the rune', 'lorc/rune-stone'],
+  ['hnoss', 'Hnoss · the jewel', 'lorc/gem-pendant'],
+  ['jord', 'Jörð · the earth', 'lorc/mountains'],
+  ['frigg', 'Frigg · the spindle', 'lorc/sewing-needle'],
+  ['andhrimnir', 'Andhrímnir · the cook', 'lorc/cauldron'],
+  ['nanna', 'Nanna · the companion', 'lorc/flowers'],
 ];
 const out = [];
 for (const [id, name, source] of CHARACTERS) {

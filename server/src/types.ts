@@ -6,7 +6,9 @@ export type AvatarShape =
   | 'square' | 'sparkle' | 'clover' | 'flower' | 'heart' | 'house' | 'star'
   // the house's own (plan 275, 2026-11-13): the Ymir mark, and fourteen figures of the lore
   | 'ymir' | 'huginn' | 'fenrir' | 'jormungandr' | 'sleipnir' | 'ratatoskr' | 'hraesvelgr' | 'heidrun'
-  | 'eikthyrnir' | 'gullinbursti' | 'mjolnir' | 'gungnir' | 'skidbladnir' | 'sol' | 'mani';
+  | 'eikthyrnir' | 'gullinbursti' | 'mjolnir' | 'gungnir' | 'skidbladnir' | 'sol' | 'mani'
+  // the house's agents, one each (2026-11-22)
+  | 'sindri' | 'volundr' | 'brokk' | 'bragi' | 'forseti' | 'modgud' | 'mimir' | 'muninn' | 'kvasir' | 'saga' | 'snotra' | 'skirnir' | 'syn' | 'tyr' | 'vidarr' | 'urdh' | 'vor' | 'eir' | 'groa' | 'galdr' | 'hnoss' | 'jord' | 'frigg' | 'andhrimnir' | 'nanna';
 
 export type AvatarColor =
   | 'black' | 'brown' | 'red' | 'orange' | 'yellow' | 'green' | 'cyan' | 'blue' | 'violet' | 'magenta' | 'gray';
