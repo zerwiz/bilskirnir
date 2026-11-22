@@ -17,6 +17,6 @@ A machine that does not answer is shown as `silent` with the reason (ssh timeout
 
 ## Proof
 
-`npm run typecheck` and `npm run build` pass. The compiled module was run against the real fleet: heimdall (local, 49 jobs, 23 here, 1 failing), the heart (clock running, 25 here, 2 failing: the daily briefing and the nsr-compliance check), the second dev machine (4 failing), and three machines shown as `silent` with their reasons (two ssh timeouts, two without an address in the registry).
+`npm run typecheck` and `npm run build` pass. The compiled module was run against the real fleet: this dev desk (local, 49 jobs, 23 here, 1 failing), the heart (clock running, 25 here, 2 failing: the daily briefing and the nsr-compliance check), the second dev machine (4 failing), and four machines shown as `silent` with their reasons (two ssh timeouts, two without an address in the registry).
 
 Not proven yet: the page in the real window through DevTools. It needs a release that carries `nornir-jobs.py` into `~/ymir-runtime`; until then the local machine reads the door from `NORNIR_JOBS_DOOR`.
