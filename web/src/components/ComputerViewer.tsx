@@ -8,7 +8,7 @@ import { computerStatusText, screenSize, screensFull } from '../lib/computer';
 import { configApi } from '../lib/configApi';
 import { useSelectedBot, useStore } from '../store';
 import { Icon } from './Icon';
-import { endCall, isCallActive, startCall, togglePause, useVoice } from '../voice/call';
+import { endCall, isCallActive, startCall, toggleMute, togglePause, useVoice } from '../voice/call';
 
 export type ScreenMode = 'watch' | 'control';
 type Conn = 'idle' | 'connecting' | 'connected' | 'disconnected' | 'error';
@@ -359,7 +359,8 @@ function ViewerVoice({ bot }: { bot: Bot }) {
   }
   return (
     <div className="viewer__voice-group" role="group" aria-label="Voice">
-      <span className="viewer__voice-state">{v.status === 'connecting' ? 'connecting…' : v.paused ? 'paused' : v.speaking ? `${bot.name} speaks` : v.thinking ? 'thinking…' : 'listening'}</span>
+      <span className="viewer__voice-state">{v.status === 'connecting' ? 'connecting…' : v.paused ? 'paused' : v.muted ? 'you are muted' : v.speaking ? `${bot.name} speaks` : v.thinking ? 'thinking…' : 'listening'}</span>
+      <button type="button" className="viewer__voice" onClick={toggleMute} aria-pressed={v.muted} disabled={v.paused} title={v.muted ? 'Your microphone is off — she cannot hear you' : 'Turn your microphone off'}>{v.muted ? '🎙 Unmute' : '🔇 Mute'}</button>
       <button type="button" className="viewer__voice" onClick={togglePause} aria-pressed={v.paused}>{v.paused ? '▶ Resume' : '❚❚ Pause'}</button>
       <button type="button" className="viewer__voice is-stop" onClick={endCall}>■ Stop</button>
     </div>
