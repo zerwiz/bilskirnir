@@ -109,3 +109,13 @@ html, body, #root { height: 100%; }
 @media (prefers-reduced-motion: reduce) {
   .sidebar, .app.has-drawer .sidebar { transition: none; }
 }
+
+/* the viewer's voice: talk to the agent while watching her computer */
+.viewer__voice-group{display:flex;align-items:center;gap:8px;margin-left:auto;margin-right:12px}
+.viewer__voice{appearance:none;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;margin-left:auto;margin-right:12px}
+.viewer__voice-group .viewer__voice{margin:0}
+.viewer__voice:hover{background:rgba(255,255,255,.18)}
+.viewer__voice.is-start{border-color:#3ecf8e;color:#c8f5dc}
+.viewer__voice.is-stop{border-color:#ff7a7a;color:#ffd0d0}
+.viewer__voice[aria-pressed="true"]{background:rgba(255,200,80,.2);border-color:#ffc850}
+.viewer__voice-state{color:rgba(255,255,255,.75);font-size:12px;min-width:7em;text-align:right}
