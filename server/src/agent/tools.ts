@@ -8,6 +8,7 @@ import { executeComposio, innerToolSlugs, isReadOnlySlug, toolkitInfo } from '..
 import { scheduleRoutine, unscheduleRoutine } from '../routines.js';
 import { createEventRoutine, deleteEventTrigger, describeEvent, listTriggerTypes } from '../triggers.js';
 import { setCheckins } from '../proactive.js';
+import { freeFor, upcoming } from '../managandr.js';
 import { createRoom, postToRoom } from './rooms.js';
 import type { ActivityKind } from '../types.js';
 import { Cron } from 'croner';
@@ -90,6 +91,22 @@ async function xSearch(a: any): Promise<string> {
 export const LIBRARY_ROOT = '/root/grokbot/files';
 
 export const TOOLS: ToolDef[] = [
+  {
+    name: 'calendar_upcoming',
+    description: "Read the operator's calendar (Mánagandr, the house's own read-only calendar door) — what is coming in the next window, soonest first. Use this before any connected calendar app. window: like 1d, 7d, 2w (default 7d).",
+    parameters: obj({ window: { type: 'string', description: 'how far ahead: e.g. 1d, 7d, 2w' } }, []),
+    activity: 'working',
+    label: 'Reading the calendar',
+    impl: async (a) => { const r = await upcoming(String(a.window || '7d')); return { output: JSON.stringify(r), summary: r.state === 'ok' ? `${r.events.length} event(s) ahead` : `calendar ${r.state}` }; },
+  },
+  {
+    name: 'calendar_free',
+    description: "Is the operator free for the next window (e.g. 30m is not allowed — use 1h, 2h, 1d)? Answers free, busy or unknown; unknown is never free.",
+    parameters: obj({ window: { type: 'string', description: 'e.g. 1h, 2h, 1d' } }, []),
+    activity: 'working',
+    label: 'Checking the calendar',
+    impl: async (a) => { const r = await freeFor(String(a.window || '1h')); return { output: JSON.stringify(r), summary: `${r.state} for ${r.window}` }; },
+  },
   {
     name: 'save_file',
     description: "Save a finished deliverable (report, notes, CSV, code, markdown) to your Library so the user can open and download it. Saved under /root/grokbot/files/<your id>/ on your computer. Files you write into that folder yourself show up in the Library too.",

@@ -114,6 +114,7 @@ export function DetailsPanel() {
                 )}
               </div>
             </section>
+            <CalendarSection />
             {bot.kind === 'room' && (
               <section>
                 <div className="section-label">Members</div>
@@ -151,5 +152,38 @@ export function DetailsPanel() {
         ) : tab === 'tasks' ? <BotTasks bot={bot} /> : <LibraryTab bot={bot} />}
       </div>
     </aside>
+  );
+}
+
+/** Mánagandr — the house's calendar, read through Ymir's door (/api/calendar): the next few things on the day. */
+function CalendarSection() {
+  const [cal, setCal] = useState<{ state: string; reason?: string; events: { summary: string; start: string; end: string; all_day: boolean; conference_url: string }[] } | null>(null);
+  useEffect(() => {
+    let live = true;
+    const load = () => fetch('/api/calendar?window=7d', { credentials: 'include' }).then((r) => r.json()).then((d) => { if (live) setCal(d); }).catch(() => { if (live) setCal({ state: 'unknown', events: [] }); });
+    load(); const t = setInterval(load, 5 * 60_000);
+    return () => { live = false; clearInterval(t); };
+  }, []);
+  if (!cal || cal.state === 'absent') return null;
+  const when = (iso: string, allDay: boolean) => {
+    const d = new Date(iso); const today = new Date(); const tomorrow = new Date(Date.now() + 864e5);
+    const day = d.toDateString() === today.toDateString() ? 'Today' : d.toDateString() === tomorrow.toDateString() ? 'Tomorrow' : d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+    return allDay ? day : `${day} ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
+  };
+  return (
+    <section>
+      <div className="section-label section-label--row"><span>The calendar</span><span className="panel-row__meta">Mánagandr</span></div>
+      <div className="panel-card">
+        {cal.state !== 'ok' ? <div className="panel-empty">The calendar cannot be read right now{cal.reason ? ` (${cal.reason})` : ''}.</div>
+          : cal.events.length === 0 ? <div className="panel-empty">Nothing in the next seven days.</div>
+          : cal.events.slice(0, 6).map((e, i) => (
+            <div key={i} className="panel-row">
+              <span className="panel-row__title" style={{ flex: 1 }}>{e.summary}</span>
+              <span className="panel-row__meta">{when(e.start, e.all_day)}</span>
+              {e.conference_url && <a className="link-btn link-btn--small" href={e.conference_url} target="_blank" rel="noopener noreferrer">Join</a>}
+            </div>
+          ))}
+      </div>
+    </section>
   );
 }
