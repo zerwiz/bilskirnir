@@ -13,6 +13,7 @@ import { CreateGroupModal } from './components/modals/CreateGroupModal';
 import { SearchModal } from './components/modals/SearchModal';
 import { ConfigLayer } from './components/config/ConfigLayer';
 import { TasksView } from './components/config/TasksView';
+import { NornirView } from './components/config/NornirView';
 import { useConfigUI } from './configStore';
 
 function Shell() {
@@ -65,7 +66,7 @@ function Shell() {
   return (
     <div className={`app${collapsed ? ' is-sidebar-collapsed' : ''}${showDetails ? ' has-details' : ''}${drawerOpen ? ' has-drawer' : ''}`}>
       <Sidebar />
-      {view === 'tasks' ? <TasksView /> : <ChatView />}
+      {view === 'tasks' ? <TasksView /> : view === 'nornir' ? <NornirView /> : <ChatView />}
       {/* the veil: only drawn on a narrow screen, behind the drawer or the details; a tap folds them away */}
       <div className="shell-veil" aria-hidden onClick={() => useStore.getState().set(drawerOpen ? { drawerOpen: false } : { detailsOpen: false })} />
       {showDetails && <DetailsPanel />}

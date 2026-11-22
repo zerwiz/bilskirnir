@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react';
 import { useConfigUI } from '../configStore';
+import { NornirIsland } from './config/NornirView';
 import { TasksIsland } from './config/TasksView';
 import type { Bot } from '@shared/types';
 import { BotAvatarFor } from '../avatar/BotAvatar';
@@ -89,7 +90,7 @@ export function Sidebar() {
   const bots = useStore((s) => s.bots);
   const live = useStore((s) => s.live);
   const storeSelectedBotId = useStore((s) => s.selectedBotId);
-  const inTasks = useConfigUI((s) => s.view === 'tasks');
+  const inTasks = useConfigUI((s) => s.view !== 'chat');
   const selectedBotId = inTasks ? null : storeSelectedBotId; // nothing highlighted while the Tasks view is open
   const user = useStore((s) => s.user);
   const narrow = useMedia(DRAWER_QUERY);
@@ -131,6 +132,7 @@ export function Sidebar() {
 
       <div className="sidebar__scroll">
         <TasksIsland />
+        <NornirIsland />
         {primary && (
           <div className="pinned">
             <button type="button" className={`pinned__tile${selectedBotId === primary.id ? ' is-selected' : ''}`} onClick={() => selectBot(primary.id)} title={displayName(primary)}>
