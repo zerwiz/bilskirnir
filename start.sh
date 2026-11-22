@@ -61,7 +61,10 @@ resolve_electron() {
   # old probe fell back to another app's runtime and to the distribution's /usr/lib/electron*, which pacman upgrades
   # on its own schedule — so an app ran on whatever Electron was lying around, and broke when that moved.
   [ -n "${BILSKIRNIR_ELECTRON:-}" ] && { printf '%s' "$BILSKIRNIR_ELECTRON"; return 0; }
-  local tree; tree="$(dirname "$(dirname "$APP")")"
+  # since the split (2026-11-19) the app lives in its own home, not under the Ymir tree: the tree is the Ymir runtime
+  local tree="${YMIR_RUNTIME_DIR:-}"
+  [ -n "$tree" ] && [ -r "$tree/bin/desktop/electron-lib.sh" ] || tree="$HOME/ymir-runtime"
+  [ -r "$tree/bin/desktop/electron-lib.sh" ] || tree="$(dirname "$(dirname "$APP")")"
   [ -r "$tree/bin/desktop/electron-lib.sh" ] || return 1
   ( . "$tree/bin/desktop/electron-lib.sh"; electron_bin "$APP" "$tree" )
 }
@@ -86,6 +89,8 @@ is_ours() {
   fi
   cwd="$(pid_cwd "$pid")"; [ -n "$cwd" ] || return 1
   under "$cwd" "$APP" && return 0
+  under "$cwd" "$(cd "$APP" && pwd -P)" && return 0     # launched through the `current` link: the process sees the real release path
+  case "$cwd/" in "$(dirname "$(dirname "$(cd "$APP" && pwd -P)")")"/releases/*) return 0 ;; esac   # an earlier release of this same install
   [ -n "$ENGINE" ] && under "$cwd" "$ENGINE" && return 0
   return 1
 }
@@ -93,7 +98,7 @@ is_ours() {
 is_sibling_tree() {
   local pid="$1" cwd; cwd="$(pid_cwd "$pid")"
   [ "$(stat -c %u "/proc/$pid" 2>/dev/null)" = "$(id -u)" ] || return 1
-  case "$cwd/" in */apps/bilskirnir/*) return 0 ;; esac; return 1
+  case "$cwd/" in */apps/bilskirnir/*|*/ymir-apps/bilskirnir/*) return 0 ;; esac; return 1
 }
 # claim <name> <port> <label>: 0 = ours and answering (keep) · 1 = free (raise it) · 2 = refused.
 # A stranger that is a sibling Bilskirnir tree is lowered here, and the port reads as free.
