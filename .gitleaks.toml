@@ -15,13 +15,13 @@ useDefault = true
 [[allowlists]]
 description = "the vendored wards name the shapes they hunt; they carry no credential"
 paths = [
-  '''^bin/gates/guards/''',
-  '''^bin/gates/secret-scan\.sh$''',
-  '''^bin/forge/pr-patterns\.sh$''',
+  '''(^|/)bin/gates/guards/''',
+  '''(^|/)bin/gates/secret-scan\.sh$''',
+  '''(^|/)bin/forge/pr-patterns\.sh$''',
 ]
 
 [[allowlists]]
 description = "a fake key the model-door test plants to prove the key never leaks; it was never a credential"
 condition = "AND"
-paths = ['''^tests/model-door\.mts$''']
+paths = ['''(^|/)tests/model-door\.mts$''']
 regexes = ['''s[k]-test-SECRET-must-never-leak-123456''']   # [k]: the pattern matches the fixture without carrying a key's shape itself
